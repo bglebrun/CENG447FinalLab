@@ -1,6 +1,6 @@
-# CENG447Lab5
+# CENG447
 
-Servo and Timer 2
+Final Lab
 
 ## Getting Started
 
