@@ -1,6 +1,6 @@
 # CENG447Lab5
 
-Final Robot Project
+Servo and Timer 2
 
 ## Getting Started
 

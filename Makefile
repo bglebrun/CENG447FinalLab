@@ -5,17 +5,17 @@
 # test-connection:	calls avrdude to test connection
 
 # Name for compilation
-PROJECT		?= RobotBT
+PROJECT		?= ultrasonic
 
 # Objects to build
-OBJECTS		?=  main.c
+OBJECTS		?= timers.o robotIo.o motor_driver.o servo.o ultrasonic.o pcint.o main.o 
 
 # Microprocessor
 AVRMCU		?= atmega328p
 AVRCLOCK	?= 16000000
 
 # Avr connection deets
-PORT		?= com9
+PORT		?= com6
 PROGRAMMER	?= arduino
 
 # Avr toolchain

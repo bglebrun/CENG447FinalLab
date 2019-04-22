@@ -1,74 +1,67 @@
-/*
- * microctrl_base.c
- *
- * Created: 4/12/2019 2:02:14 PM
- * Author : Walter Vaughan
- */ 
-
-/*** IMPORTANT -- set this name so you can search for it (short, alphanumeric) ***/
-#define MY_BT_NAME "Williams"
-
-
-#define F_CPU (16000000)
-#define BAUDRATE (9600)
-#define BAUD_PRESCALE (F_CPU/BAUDRATE/16 - 1)
-
+#define F_CPU 16000000
+#include "bit_macros.h"
+#include "pcint.h"
+#include "robotIo.h"
+#include "servo.h"
+#include "ultrasonic.h"
+#include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/delay.h>
 
-void uart_tx(char);
-void uart_tx_str(char*);
-char uart_rx();
+void printAngleDistance(unsigned char angle, unsigned int distance);
 
-int main(void)
+/* stdout stream */
+static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
+
+void Init()
 {
-	char r; /* received character on UART */
-	
-	/* startup UART @ 9600 8n1 asynchronous, receive & transmit enabled */
-	UBRR0H = (unsigned char)(BAUD_PRESCALE >> 8);
-	UBRR0L = (unsigned char)BAUD_PRESCALE;
-	UCSR0B = (1<<RXEN0)  | (1<<TXEN0);
-	UCSR0C = (1<<UCSZ01) | (1<<UCSZ00);
+    // configure UART and I/O
+    initUART();
 
-	/* Set the BT name */
-	uart_tx_str("AT+NAME=");
-	uart_tx_str(MY_BT_NAME);
-	uart_tx(0);
-	
-	/* control output LED on pin 13 -- PORTB5 */
-	DDRB = (1 << PORTB5);
-	
+    // initialize pin change interrupts
+    initPCINT();
+
+    // configure ultrasonic range sensor
+    initUltrasonic();
+
+    // configure servo
+    initServo();
+
+    // Enable global interrupts
+    sei();
+}
+
+int main()
+{
+    Init();
     while (1)
     {
-		r = uart_rx();
-		if (r == 'h')
-			PORTB |= (1 << PORTB5);
-		if (r == 'l')
-			PORTB &= ~(1 << PORTB5);
+        fprintf(&mystdout, "Starting tests:\r\n");
+        // start centered
+        moveServo(90);
+        printAngleDistance(90, readUltrasonic());
+        _delay_ms(500);
+        // full CCW (left)
+        moveServo(180);
+        printAngleDistance(180, readUltrasonic());
+        _delay_ms(500);
+        // full CW (right)
+        moveServo(0);
+        printAngleDistance(0, readUltrasonic());
+        _delay_ms(500);
+        for (unsigned char i = 0; i <= 180; i += 15)
+        {
+            moveServo(i);
+            printAngleDistance(i, readUltrasonic());
+            _delay_ms(500);
+        }
+        _delay_ms(500);
     }
+    return 1;
 }
 
-/* write a byte to the UART */
-void uart_tx(char c)
+void printAngleDistance(unsigned char angle, unsigned int distance)
 {
-	/* busy-wait until UDRE0 in UCSR0A goes high */
-	while ((UCSR0A & (1 << UDRE0)) == 0);
-	/* then write the byte */
-	UDR0 = c;
-}
-
-/* write a string to the UART, not including the null terminator */
-void uart_tx_str(char* s)
-{
-	while (*s)
-		uart_tx(*(s++));
-}
-
-/* return whatever byte is in the RX, if there is one. Return 0 otherwise */
-char uart_rx()
-{
-	if (UCSR0A & (1 << RXC0))
-		return UDR0;
-	else
-		return 0;
+    fprintf(&mystdout, "Position: %d degrees | Distance: %d cm\r\n", angle,
+            distance);
 }
