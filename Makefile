@@ -8,7 +8,8 @@
 PROJECT		?= ultrasonic
 
 # Objects to build
-OBJECTS		?= timers.o robotIo.o motor_driver.o servo.o ultrasonic.o pcint.o main.o 
+# OBJECTS		?= timers.o robotIo.o motor_driver.o servo.o ultrasonic.o pcint.o main.o
+OBJECTS		?= blink.o
 
 # Microprocessor
 AVRMCU		?= atmega328p

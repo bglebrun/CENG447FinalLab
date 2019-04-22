@@ -7,7 +7,7 @@
 
 /*** IMPORTANT -- set this name so you can search for it (short, alphanumeric)
  * ***/
-#define MY_BT_NAME "changeme"
+#define MY_BT_NAME "BENSQ"
 
 #define F_CPU (16000000)
 #define BAUDRATE (9600)
