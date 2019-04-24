@@ -20,6 +20,6 @@ async def main(mac_addr: str, loop: asyncio.AbstractEventLoop):
 async def getkey():
 	return readkey()
 
-mac_addr = "01:23:45:67:89:ab" # CHANGE THIS to your BT's MAC
+mac_addr = "f0:b5:d1:5b:e0:63" # CHANGE THIS to your BT's MAC
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main(mac_addr, loop))

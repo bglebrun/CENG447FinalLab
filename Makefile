@@ -5,7 +5,7 @@
 # test-connection:	calls avrdude to test connection
 
 # Name for compilation
-PROJECT		?= ultrasonic
+PROJECT		?= RCRobot
 
 # Objects to build
 # OBJECTS		?= timers.o robotIo.o motor_driver.o servo.o ultrasonic.o pcint.o main.o
