@@ -10,7 +10,7 @@
 
 /* configurations for the UART device register B*/
 #define UCSR0B_CONFIG                                                          \
-    (0 << RXCIE0) | (0 << TXCIE0) | (0 << UDRIE0) | (1 << RXEN0) |             \
+    (1 << RXCIE0) | (0 << TXCIE0) | (0 << UDRIE0) | (1 << RXEN0) |             \
         (1 << TXEN0) | (0 << UCSZ02) | (0 << RXB80) | (0 << TXB80);
 /* configurations for the UART device register C*/
 #define UCSR0C_CONFIG                                                          \
