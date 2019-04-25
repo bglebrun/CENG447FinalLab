@@ -4,6 +4,25 @@ import asyncio
 import sys
 import os
 import time
+from bleak import BleakClient
+import numpy as np
+
+# the service and characteristic UUIDs for our bluetooth module's UART
+GATT_SERVICE = "0000ffe0-0000-1000-8000-00805f9b34fb"
+GATT_CHARACTERISTIC = "0000ffe1-0000-1000-8000-00805f9b34fb"
+mac_addr = "f0:b5:d1:5b:e0:63"  # CHANGE THIS to your BT's MAC
+
+async def write_packet(client: BleakClient, left_forward, right_forward, left_speed, right_speed):
+    left_dir = left_forward.to_bytes(1, 'little')
+    left_spd = left_speed.to_bytes(1, 'little')
+    right_dir = right_forward.to_bytes(1, 'little')
+    right_spd = right_speed.to_bytes(1, 'little')
+    await client.write_gatt_char(GATT_CHARACTERISTIC, left_dir)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, left_spd)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, right_dir)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, right_spd)
+    print("wrote packet: {0} | {1} | {2} | {3}".format(
+    left_dir, left_spd, right_dir, right_spd))
 
 class DS4(object):
     axis_left = None
@@ -42,24 +61,29 @@ def io_event_loop(loop, event_queue):
         event = pygame.event.wait()
         asyncio.run_coroutine_threadsafe(event_queue.put(event), loop=loop)
 
-def main():
-    loop = asyncio.get_event_loop()
-    event_queue =asyncio.Queue()
-
+def main(mac_addr: str, loop: asyncio.AbstractEventLoop):
     ds4 = DS4()
     ds4.init()
-    
-    pygame_task = loop.run_in_executor(None, io_event_loop, loop, event_queue)
-    ds4_task = asyncio.ensure_future(ds4.read(event_queue))
-    try:
-        loop.run_forever()
-    except pygame.JOYAXISMOTION:
-        pass
-    finally:
-        pygame_task.cancel()
-        ds4_task.cancel()
-    
-    pygame.quit()
+
+    async with BleakClient(mac_addr, loop=loop) as client:
+        await client.connect()
+        await client.get_services()
+        print("connected.")
+
+        loop = asyncio.get_event_loop()
+        event_queue =asyncio.Queue()
+        
+        pygame_task = loop.run_in_executor(None, io_event_loop, loop, event_queue)
+        ds4_task = asyncio.ensure_future(ds4.read(event_queue))
+        try:
+            loop.run_forever()
+        except pygame.JOYAXISMOTION:
+            pass
+        finally:
+            pygame_task.cancel()
+            ds4_task.cancel()
+        
+        pygame.quit()
 
 if __name__ == "__main__":
     main()
