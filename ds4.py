@@ -20,7 +20,8 @@ class DS4(object):
     client = None
     quit = False
 
-    def __init___(self):
+    def __init__(self):
+        print("init controller")
         pygame.init()
         pygame.joystick.init()
         self.controller = pygame.joystick.Joystick(0)
@@ -48,13 +49,8 @@ class DS4(object):
             print("wrote packet: {0} | {1} | {2} | {3}".format(
                 left_dir, left_spd, right_dir, right_spd))
 
-    async def read(self, event_queue):
-        #Axis 1: left sticks
-        #Axis 3: right sticks
-        print("starting read")
-        #async with self.client:
-        while 1:
-            event = await event_queue.get()
+    def read(self, events):
+        for event in events:
             if event.type == pygame.QUIT:
                 self.quit = True
                 break
@@ -62,52 +58,41 @@ class DS4(object):
                 axis_left = round(self.controller.get_axis(1),3)
                 axis_right = round(self.controller.get_axis(3),3)
 
-
-            # print (axis_data)
-            # writing to vars goes here
+            speed_left = self.convert_speed(axis_left)
+            speed_right = self.convert_speed(axis_right) 
             print("Left:")
-            print(axis_left)
-            self.write_packet(1, 0, self.convert_speed(axis_left), 0)
+            print(speed_left)
+            if speed_left > 0: 
+                self.write_packet(1, 0,abs(speed_left), 0)
+            else:
+                self.write_packet(0, 0, abs(speed_left), 0)
             print("Right:")
-            print(axis_right)
-            self.write_packet(0, 1, 0, self.convert_speed(axis_left))
+            print(speed_right)
+            if speed_right > 0:
+                self.write_packet(0, 1, 0, abs(speed_right))
+            else:
+                self.write_packet(0, 0, 0, abs(speed_right))
             os.system('cls')
 
-        asyncio.get_event_loop()
-
     def convert_speed(self, speed):
-        return (-1) * speed * 255
+        return int((-1) * speed * 255)
 
-    def run_forever(self):
-        while not self.quit:
-            pass
-
-def io_event_loop(loop, event_queue):
-    while 1:
-        event = pygame.event.wait()
-        asyncio.run_coroutine_threadsafe(event_queue.put(event), loop=loop)
-
-async def main(mac_Addr: str, loop: asyncio.AbstractEventLoop):
-   async with BleakClient(mac_Addr, loop=loop) as client:
+async def main(mac_addr: str, loop: asyncio.AbstractEventLoop, ds4: DS4):
+    async with BleakClient(mac_addr, loop=loop) as client:
         print("connecting to bot")
         await client.connect()
         await client.get_services()
         print("finished connect")
-        ds4 = DS4()
         ds4.set_client(client)
-        ds4_task = asyncio.ensure_future(ds4.read(event_queue))
+        while True:
+            ds4.read(pygame.event.get())
+
         
-        pygame_task = loop.run_in_executor(None, io_event_loop, loop, event_queue)
-
-        ds4.run_forever()
-        exit_program(pygame_task, ds4_task)
-
-def exit_program(pygame_task, ds4_task):
-    pygame_task.cancel()
-    ds4_task.cancel()
-    pygame.quit()
-
 if __name__ == "__main__":
+   # loop = asyncio.get_event_loop()
+   # event_queue = asyncio.Queue()
+   # loop.run_until_complete(main(mac_addr, loop))
+    ds4 = DS4()
     loop = asyncio.get_event_loop()
-    event_queue = asyncio.Queue()
-    loop.run_until_complete(main(mac_addr, loop))
+    loop.run_until_complete(main(mac_addr, loop, ds4))
+   #main(loop)
