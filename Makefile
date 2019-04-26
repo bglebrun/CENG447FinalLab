@@ -9,7 +9,7 @@ PROJECT		?= RCRobot
 
 # Objects to build
 # OBJECTS		?= timers.o robotIo.o motor_driver.o servo.o ultrasonic.o pcint.o main.o
-OBJECTS		?= robotIo.o timers.o motor_driver.o blink.o
+OBJECTS		?= robotIo.o timers.o motor_driver.o main.o
 
 # Microprocessor
 AVRMCU		?= atmega328p

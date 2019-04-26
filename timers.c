@@ -10,6 +10,12 @@ ISR(TIMER1_OVF_vect)
     TimerOverflow = true;
 }
 
+ISR(TIMER2_OVF_vect)
+{
+    // Timer 2 overflow
+    overflowCount++;
+}
+
 void initTimer0()
 {
     // set both motors to start off
@@ -76,6 +82,9 @@ void initTimer2()
     TCCR2A |= (0 << COM2A1) | (0 << COM2A0) | (1 << COM2B1) | (0 << COM2B0) |
               (0 << WGM21) | (1 << WGM20);
     TCCR2B |= (1 << WGM22) | (1 << CS22) | (1 << CS21) | (1 << CS20);
+
+    // enable overflow interrupt
+    TIMSK2 |= (1 << TOIE2);
 }
 
 /******************************************************************************
