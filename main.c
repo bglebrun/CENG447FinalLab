@@ -73,6 +73,7 @@ int main(void)
 
     while (overflowCount < 1500)
     {
+        // automated mode here
     }
     manual_enable = true;
     while (1)
