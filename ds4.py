@@ -14,6 +14,7 @@ GATT_CHARACTERISTIC = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
 mac_addr = "f0:b5:d1:5b:e0:63"  # CHANGE THIS to your BT's MAC
 
+
 class DS4(object):
     axis_left = None
     axis_right = None
@@ -55,27 +56,36 @@ class DS4(object):
                 self.quit = True
                 break
             elif event.type == pygame.JOYAXISMOTION:
-                axis_left = round(self.controller.get_axis(1),3)
-                axis_right = round(self.controller.get_axis(3),3)
+                axis_left = round(self.controller.get_axis(1), 3)
+                axis_right = round(self.controller.get_axis(3), 3)
 
             speed_left = self.convert_speed(axis_left)
-            speed_right = self.convert_speed(axis_right) 
-            print("Left:")
-            print(speed_left)
-            if speed_left > 0: 
-                self.write_packet(1, 0,abs(speed_left), 0)
-            else:
-                self.write_packet(0, 0, abs(speed_left), 0)
-            print("Right:")
-            print(speed_right)
-            if speed_right > 0:
-                self.write_packet(0, 1, 0, abs(speed_right))
-            else:
-                self.write_packet(0, 0, 0, abs(speed_right))
+            speed_right = self.convert_speed(axis_right)
+            dir_left = 0
+            dir_right = 0
+            if speed_left >= 0:
+                dir_left = 1
+            if speed_right >= 0:
+                dir_right = 1
+
+            self.write_packet(dir_left, dir_right, speed_left, speed_right)
+            # print("Left:")
+            # print(speed_left)
+            # if speed_left > 0:
+            #     self.write_packet(1, 0,abs(speed_left), 0)
+            # else:
+            #     self.write_packet(0, 0, abs(speed_left), 0)
+            # print("Right:")
+            # print(speed_right)
+            # if speed_right > 0:
+            #     self.write_packet(0, 1, 0, abs(speed_right))
+            # else:
+            #     self.write_packet(0, 0, 0, abs(speed_right))
             os.system('cls')
 
     def convert_speed(self, speed):
         return int((-1) * speed * 255)
+
 
 async def main(mac_addr: str, loop: asyncio.AbstractEventLoop, ds4: DS4):
     async with BleakClient(mac_addr, loop=loop) as client:
@@ -87,7 +97,7 @@ async def main(mac_addr: str, loop: asyncio.AbstractEventLoop, ds4: DS4):
         while True:
             ds4.read(pygame.event.get())
 
-        
+
 if __name__ == "__main__":
    # loop = asyncio.get_event_loop()
    # event_queue = asyncio.Queue()
@@ -95,4 +105,4 @@ if __name__ == "__main__":
     ds4 = DS4()
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main(mac_addr, loop, ds4))
-   #main(loop)
+   # main(loop)
