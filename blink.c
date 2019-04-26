@@ -7,7 +7,7 @@
 
 /*** IMPORTANT -- set this name so you can search for it (short, alphanumeric)
  * ***/
-#define MY_BT_NAME "BENSQ"
+#define MY_BT_NAME "BENSQG"
 
 #define F_CPU (16000000)
 // #define BAUDRATE (9600)
@@ -45,7 +45,7 @@ void init()
     // enable interrupts
     sei();
 
-    fprintf(&mystdout, "init done\r\n");
+    // fprintf(&mystdout, "init done\r\n");
 }
 
 int main(void)
@@ -60,10 +60,10 @@ int main(void)
     init();
 
     /* Set the BT name */
-    // uart_tx_str("AT+NAME=");
-    // uart_tx_str(MY_BT_NAME);
-    // uart_tx(0);
-    fprintf(&mystdout, "AT+NAME=%s\r\n", MY_BT_NAME);
+    uart_tx_str("AT+NAME=");
+    uart_tx_str(MY_BT_NAME);
+    uart_tx(0);
+    // fprintf(&mystdout, "AT+NAME=%s\r\n", MY_BT_NAME);
 
     /* control output LED on pin 13 -- PORTB5 */
     DDRB = (1 << PORTB5);
@@ -81,21 +81,21 @@ int main(void)
 }
 
 /* write a byte to the UART */
-// void uart_tx(char c)
-// {
-//     /* busy-wait until UDRE0 in UCSR0A goes high */
-//     while ((UCSR0A & (1 << UDRE0)) == 0)
-//         ;
-//     /* then write the byte */
-//     UDR0 = c;
-// }
+void uart_tx(char c)
+{
+    /* busy-wait until UDRE0 in UCSR0A goes high */
+    while ((UCSR0A & (1 << UDRE0)) == 0)
+        ;
+    /* then write the byte */
+    UDR0 = c;
+}
 
 /* write a string to the UART, not including the null terminator */
-// void uart_tx_str(char* s)
-// {
-//     while (*s)
-//         uart_tx(*(s++));
-// }
+void uart_tx_str(char* s)
+{
+    while (*s)
+        uart_tx(*(s++));
+}
 
 /* return whatever byte is in the RX, if there is one. Return 0 otherwise */
 // char uart_rx()
@@ -108,29 +108,29 @@ int main(void)
 
 ISR(USART_RX_vect)
 {
-    char inByte = UDR0;
+    unsigned char inByte = UDR0;
     PORTB |= (1 << PORTB5);
 
     switch (global_state)
     {
     case 0:
-        left_forward = (bool)inByte;
-        fprintf(&mystdout, "left forward: %d\r\n", left_forward);
+        right_forward = (bool)inByte;
+        // fprintf(&mystdout, "right forward: %d\r\n", right_forward);
         global_state = 1;
         break;
     case 1:
-        left_speed = inByte;
-        fprintf(&mystdout, "left speed: %d\r\n", left_speed);
+        right_speed = inByte;
+        // fprintf(&mystdout, "right speed: %d\r\n", right_speed);
         global_state = 2;
         break;
     case 2:
-        right_forward = (bool)inByte;
-        fprintf(&mystdout, "right forward: %d\r\n", right_forward);
+        left_forward = (bool)inByte;
+        // fprintf(&mystdout, "left forward: %d\r\n", left_forward);
         global_state = 3;
         break;
     case 3:
-        right_speed = inByte;
-        fprintf(&mystdout, "right speed: %d\r\n", right_speed);
+        left_speed = inByte;
+        // fprintf(&mystdout, "left speed: %d\r\n", left_speed);
         set_robot_speeds();
         global_state = 0;
         break;

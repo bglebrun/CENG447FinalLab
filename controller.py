@@ -34,6 +34,8 @@ async def main(mac_addr: str, loop: asyncio.AbstractEventLoop):
             sleep(5)
             await write_packet(client, 0, 0, 64, 64)
             sleep(5)
+            await write_packet(client, 0, 1, 64, 128)
+            sleep(5)
         # print('Connected. Type to send keystrokes. Press ESC to quit.')
         # k = await getkey()
         # while ord(k) != 27:
@@ -44,6 +46,7 @@ async def main(mac_addr: str, loop: asyncio.AbstractEventLoop):
 async def getkey():
     return readkey()
 
-mac_addr = "f0:b5:d1:5b:e0:63"  # CHANGE THIS to your BT's MAC
+# mac_addr = "f0:b5:d1:5b:e0:63"  # CHANGE THIS to your BT's MAC
+mac_addr = "88:3f:4a:f4:70:e8"
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main(mac_addr, loop))
