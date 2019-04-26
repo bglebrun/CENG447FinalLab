@@ -61,12 +61,14 @@ class DS4(object):
 
             speed_left = self.convert_speed(axis_left)
             speed_right = self.convert_speed(axis_right)
-            dir_left = 0
-            dir_right = 0
-            if speed_left >= 0:
+            dir_left = 1
+            dir_right = 1
+            if speed_left < 0:
                 dir_left = 1
-            if speed_right >= 0:
+                speed_left = -speed_left
+            if speed_right < 0:
                 dir_right = 1
+                speed_right = -speed_right
 
             self.write_packet(dir_left, dir_right, speed_left, speed_right)
             # print("Left:")
