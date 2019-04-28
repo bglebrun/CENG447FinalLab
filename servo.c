@@ -34,7 +34,7 @@ unsigned char mapAngle(unsigned char angleDeg)
         result = DEG_MAP_MIN + (angleDeg / DEG_PER_UNIT);
     }
 
-    fprintf(&mystdout, "result map: %d\r\n", result);
+    // fprintf(&mystdout, "result map: %d\r\n", result);
 
     return result;
 }

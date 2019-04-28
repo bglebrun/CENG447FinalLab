@@ -13,7 +13,9 @@
 // #define BAUDRATE (9600)
 // #define BAUD_PRESCALE (F_CPU / BAUDRATE / 16 - 1)
 
+#include "ai.h"
 #include "motor_driver.h"
+#include "pcint.h"
 #include "robotIo.h"
 #include "servo.h"
 #include "ultrasonic.h"
@@ -42,6 +44,15 @@ void init()
     // initialize motor control
     initMotor();
 
+    // initialize servo control
+    initServo();
+
+    // initialize ultrasonic
+    initUltrasonic();
+
+    // initialize pin change interrupts
+    initPCINT();
+
     // init UART comms
     initUART();
 
@@ -66,6 +77,8 @@ int main(void)
     uart_tx_str("AT+NAME=");
     uart_tx_str(MY_BT_NAME);
     uart_tx(0);
+    uart_tx_str("\r\n");
+    uart_tx(0);
     // fprintf(&mystdout, "AT+NAME=%s\r\n", MY_BT_NAME);
 
     /* control output LED on pin 13 -- PORTB5 */
@@ -74,6 +87,9 @@ int main(void)
     while (overflowCount < 1500)
     {
         // automated mode here
+        fprintf(&mystdout, "overflow count before: %d\r\n", overflowCount);
+        runAi();
+        fprintf(&mystdout, "overflow count after: %d\r\n", overflowCount);
     }
     manual_enable = true;
     while (1)

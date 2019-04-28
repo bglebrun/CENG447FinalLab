@@ -8,6 +8,7 @@
 
 #define DEG_MAP_MAX 18
 #define DEG_MAP_MIN 4
+#define SERVO_RANGE (DEG_MAP_MAX - DEG_MAP_MIN)
 #define DEG_PER_UNIT (180 / (DEG_MAP_MAX - DEG_MAP_MIN))
 
 void initServo();

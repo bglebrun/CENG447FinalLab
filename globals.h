@@ -12,6 +12,6 @@
  */
 volatile bool TimerOverflow;
 volatile bool responseAvailable;
-volatile int overflowCount;
+volatile unsigned int overflowCount;
 
 #endif
