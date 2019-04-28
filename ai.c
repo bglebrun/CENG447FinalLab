@@ -1,7 +1,8 @@
 #include "ai.h"
 
 /* stdout stream */
-static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
+// static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL,
+// _FDEV_SETUP_WRITE);
 
 void getDistances()
 {
@@ -14,13 +15,51 @@ void getDistances()
     moveServo(0);
     _delay_ms(100);
 
-    for (unsigned char i = 0; i < SERVO_RANGE; i++)
+    // for (unsigned char i = 0; i < SERVO_RANGE; i++)
+    // {
+    //     fprintf(&mystdout, "distances[%d]: %d\r\n", i, distances[i]);
+    // }
+}
+
+void takeActions()
+{
+    if (distances[RIGHT_DIST] <= CLEAR_DIST)
     {
-        fprintf(&mystdout, "distances[%d]: %d\r\n", i, distances[i]);
+        if (distances[FORWARD_DIST] >= CLEAR_DIST)
+        {
+            // apply a correction factor to try to keep us near the wall
+            if (distances[RIGHT_DIST] <= CLOSE_DIST)
+            {
+                correctionFactor = -CLOSE_DIST / distances[RIGHT_DIST];
+            }
+            else if (distances[RIGHT_DIST] >= FAR_DIST)
+            {
+                correctionFactor = distances[RIGHT_DIST] / FAR_DIST;
+            }
+            // TODO: DRIVE STRAIGHT WITH CORRECTION
+        }
+        else if (distances[LEFT_DIST] >= CLEAR_DIST)
+        {
+            // TODO: TURN LEFT
+            // TODO: DRIVE STRAIGHT
+        }
+        else
+        {
+            // TODO: TURN AROUND
+        }
+    }
+    else
+    {
+        // TODO: TURN RIGHT
+        // TODO: DRIVE STRAIGHT
     }
 }
 
-void runAi() { getDistances(); }
+void runAi()
+{
+    getDistances();
+    takeActions();
+}
 
 void forwardDrive(int speed, int bias)
 {
