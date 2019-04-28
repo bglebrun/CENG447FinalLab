@@ -37,21 +37,28 @@ void takeActions()
                 correctionFactor = distances[RIGHT_DIST] / FAR_DIST;
             }
             // TODO: DRIVE STRAIGHT WITH CORRECTION
+            driveForwardBias(128, correctionFactor);
+            // TODO: SET SPEED CORRECTLY FOR ALL FUNCTIONS
         }
         else if (distances[LEFT_DIST] >= CLEAR_DIST)
         {
             // TODO: TURN LEFT
+            turnLeft(128);
             // TODO: DRIVE STRAIGHT
+            driveForwardBias(128, correctionFactor);
         }
         else
         {
             // TODO: TURN AROUND
+            turnAround(128);
         }
     }
     else
     {
         // TODO: TURN RIGHT
+        turnRight(128);
         // TODO: DRIVE STRAIGHT
+        driveForwardBias(128, correctionFactor);
     }
 }
 
