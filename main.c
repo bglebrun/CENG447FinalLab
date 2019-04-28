@@ -138,21 +138,28 @@ ISR(USART_RX_vect)
     switch (global_state)
     {
     case 0:
-        left_forward = (bool)inByte;
-        // fprintf(&mystdout, "right forward: %d\r\n", right_forward);
-        global_state = 1;
+        // look for the start of packet message
+        if (inByte == '\n')
+        {
+            global_state = 1;
+        }
         break;
     case 1:
-        left_speed = inByte;
-        // fprintf(&mystdout, "right speed: %d\r\n", right_speed);
+        left_forward = (bool)inByte;
+        // fprintf(&mystdout, "right forward: %d\r\n", right_forward);
         global_state = 2;
         break;
     case 2:
-        right_forward = (bool)inByte;
-        // fprintf(&mystdout, "left forward: %d\r\n", left_forward);
+        left_speed = inByte;
+        // fprintf(&mystdout, "right speed: %d\r\n", right_speed);
         global_state = 3;
         break;
     case 3:
+        right_forward = (bool)inByte;
+        // fprintf(&mystdout, "left forward: %d\r\n", left_forward);
+        global_state = 4;
+        break;
+    case 4:
         right_speed = inByte;
         // fprintf(&mystdout, "left speed: %d\r\n", left_speed);
         set_robot_speeds();

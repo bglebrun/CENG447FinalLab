@@ -21,6 +21,7 @@ async def write_packet(client: BleakClient, left_forward, left_speed, right_forw
     left_spd = left_speed.to_bytes(1, 'little')
     right_dir = right_forward.to_bytes(1, 'little')
     right_spd = right_speed.to_bytes(1, 'little')
+    await client.write_gatt_char(GATT_CHARACTERISTIC, '\n'.encode('ascii'))
     await client.write_gatt_char(GATT_CHARACTERISTIC, left_dir)
     await client.write_gatt_char(GATT_CHARACTERISTIC, left_spd)
     await client.write_gatt_char(GATT_CHARACTERISTIC, right_dir)
