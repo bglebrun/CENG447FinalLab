@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #define BIAS_MULT 1
 
-void forwardDrive(int, int);
-void turnRight(int);
-void turnLeft(int);
+void forwardDrive(int speed, int bias);
+void turnRight(int speed);
+void turnLeft(int speed);
 
 #endif

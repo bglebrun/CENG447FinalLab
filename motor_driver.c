@@ -14,7 +14,19 @@
 volatile unsigned long MAIC;
 unsigned long targetCount;
 
-void setA(unsigned char speed, wheelDirection direction)
+void initMotor()
+{
+    // Init port B for output
+    DDRB = 0xFF;
+    DDRD = 0xFF;
+    PORTB = 0x00;
+    PORTD = 0x00;
+
+    initTimer0();
+}
+
+// Right Wheels
+void rightWheels(unsigned char speed, wheelDirection direction)
 {
     switch (direction)
     {
@@ -30,7 +42,8 @@ void setA(unsigned char speed, wheelDirection direction)
     OCR0A = speed;
 }
 
-void setB(unsigned char speed, wheelDirection direction)
+// Left wheels
+void leftWheels(unsigned char speed, wheelDirection direction)
 {
     switch (direction)
     {
@@ -46,65 +59,59 @@ void setB(unsigned char speed, wheelDirection direction)
     OCR0B = speed;
 }
 
-void initMotor()
-{
-    // Init port B for output
-    DDRB = 0xFF;
-    DDRD = 0xFF;
-    PORTB = 0x00;
-    PORTD = 0x00;
-
-    initTimer0();
-}
-
 void turnLeftTimed(unsigned char speed, int time_ms)
 {
     getNumInterruptsForDuration(time_ms);
-    setB(speed, FORWARD);
-    setA(speed, BACK);
+    leftWheels(speed, FORWARD);
+    rightWheels(speed, BACK);
     delayUntilTargetCount();
 }
 
 void turnRightTimed(unsigned char speed, int time_ms)
 {
     getNumInterruptsForDuration(time_ms);
-    setB(speed, BACK);
-    setA(speed, FORWARD);
+    leftWheels(speed, BACK);
+    rightWheels(speed, FORWARD);
     delayUntilTargetCount();
 }
 
 void driveForwardTimed(unsigned char speed, int time_ms)
 {
     getNumInterruptsForDuration(time_ms);
-    setA(speed, FORWARD);
-    setB(speed, FORWARD);
+    rightWheels(speed, FORWARD);
+    leftWheels(speed, FORWARD);
     delayUntilTargetCount();
 }
 
 void driveForward(unsigned char speed)
 {
-    setA(speed, FORWARD);
-    setB(speed, FORWARD);
+    rightWheels(speed, FORWARD);
+    leftWheels(speed, FORWARD);
+}
+
+void driveForwardBias(unsigned char leftSpeed, unsigned char rightSpeed) {
+    leftWheels(leftSpeed, FORWARD);
+    rightWheels(rightSpeed, FORWARD);
 }
 
 void driveBackward(unsigned char speed)
 {
-    setA(speed, BACK);
-    setB(speed, BACK);
+    rightWheels(speed, BACK);
+    leftWheels(speed, BACK);
 }
 
 void driveBackwardTimed(unsigned char speed, int time_ms)
 {
     getNumInterruptsForDuration(time_ms);
-    setA(speed, BACK);
-    setB(speed, BACK);
+    rightWheels(speed, BACK);
+    leftWheels(speed, BACK);
     delayUntilTargetCount();
 }
 
 void stop()
 {
-    setA(0, FORWARD);
-    setB(0, FORWARD);
+    rightWheels(0, FORWARD);
+    leftWheels(0, FORWARD);
 }
 
 void delayUntilTargetCount()

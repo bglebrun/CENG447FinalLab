@@ -148,7 +148,7 @@ void set_robot_speeds()
     {
         wheelDirection dir_a = left_forward ? FORWARD : BACK;
         wheelDirection dir_b = right_forward ? FORWARD : BACK;
-        setA(left_speed, dir_a);
-        setB(right_speed, dir_b);
+        leftWheels(left_speed, dir_a);
+        rightWheels(right_speed, dir_b);
     }
 }
