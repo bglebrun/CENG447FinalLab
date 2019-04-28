@@ -39,7 +39,7 @@ void rightWheels(unsigned char speed, wheelDirection direction)
         clearBit(PORTD, H_IN1);
         break;
     }
-    OCR0A = speed;
+    OCR0A = ((ABSOLUTE_BIAS > 0) ? speed - abs(ABSOLUTE_BIAS) : speed);
 }
 
 // Left wheels
@@ -56,7 +56,7 @@ void leftWheels(unsigned char speed, wheelDirection direction)
         clearBit(PORTB, H_IN3);
         break;
     }
-    OCR0B = speed;
+    OCR0B = ((ABSOLUTE_BIAS < 0) ? speed - abs(ABSOLUTE_BIAS) : speed);
 }
 
 void turnLeftTimed(unsigned char speed, int time_ms)
