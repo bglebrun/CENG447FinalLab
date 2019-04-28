@@ -87,7 +87,6 @@ int main(void)
     while (overflowCount < 1500)
     {
         // automated mode here
-        fprintf(&mystdout, "overflow count before: %d\r\n", overflowCount);
         runAi();
         fprintf(&mystdout, "overflow count after: %d\r\n", overflowCount);
     }
@@ -164,7 +163,7 @@ void set_robot_speeds()
     {
         wheelDirection dir_a = left_forward ? FORWARD : BACK;
         wheelDirection dir_b = right_forward ? FORWARD : BACK;
-        setA(left_speed, dir_a);
-        setB(right_speed, dir_b);
+        leftWheels(left_speed, dir_a);
+        rightWheels(right_speed, dir_b);
     }
 }
