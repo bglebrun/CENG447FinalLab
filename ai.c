@@ -53,13 +53,16 @@ void takeActions()
             turnAround(128);
         }
     }
-    else
+    else if (distances[FORWARD_DIST] <= CLEAR_DIST ||
+             distances[LEFT_DIST] <= CLEAR_DIST)
     {
         // TODO: TURN RIGHT
         turnRight(128);
         // TODO: DRIVE STRAIGHT
         driveForwardBias(128, correctionFactor);
     }
+    // if all distances are > CLEAR_DIST, halt as we should have
+    // escaped the maze.
 }
 
 void runAi()
