@@ -10,6 +10,10 @@
 #define TURN_DELAY_CIRCLE 250
 #define TURN_DELAY_SQUARE 500
 #define DRIVE_DELAY 500
+// positive->right turn bias, negative->left turn bias
+#define ABSOLUTE_BIAS 0
+#define abs(x) (x > 0 ? x : (-1) * x)
+
 
 typedef enum WHEEL_DIRECTION
 {
