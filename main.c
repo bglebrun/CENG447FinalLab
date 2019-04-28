@@ -59,6 +59,11 @@ void init()
     // enable interrupts
     sei();
 
+    left_forward = 0;
+    right_forward = 0;
+    left_speed = 0;
+    right_speed = 0;
+
     // fprintf(&mystdout, "init done\r\n");
 }
 
@@ -88,7 +93,7 @@ int main(void)
     {
         // automated mode here
         runAi();
-        fprintf(&mystdout, "overflow count after: %d\r\n", overflowCount);
+        // fprintf(&mystdout, "overflow count after: %d\r\n", overflowCount);
     }
     manual_enable = true;
     while (1)
@@ -133,22 +138,22 @@ ISR(USART_RX_vect)
     switch (global_state)
     {
     case 0:
-        right_forward = (bool)inByte;
+        left_forward = (bool)inByte;
         // fprintf(&mystdout, "right forward: %d\r\n", right_forward);
         global_state = 1;
         break;
     case 1:
-        right_speed = inByte;
+        left_speed = inByte;
         // fprintf(&mystdout, "right speed: %d\r\n", right_speed);
         global_state = 2;
         break;
     case 2:
-        left_forward = (bool)inByte;
+        right_forward = (bool)inByte;
         // fprintf(&mystdout, "left forward: %d\r\n", left_forward);
         global_state = 3;
         break;
     case 3:
-        left_speed = inByte;
+        right_speed = inByte;
         // fprintf(&mystdout, "left speed: %d\r\n", left_speed);
         set_robot_speeds();
         global_state = 0;
@@ -161,9 +166,9 @@ void set_robot_speeds()
 {
     if (manual_enable)
     {
-        wheelDirection dir_a = left_forward ? FORWARD : BACK;
-        wheelDirection dir_b = right_forward ? FORWARD : BACK;
-        leftWheels(left_speed, dir_a);
-        rightWheels(right_speed, dir_b);
+        wheelDirection dir_left = left_forward ? FORWARD : BACK;
+        wheelDirection dir_right = right_forward ? FORWARD : BACK;
+        leftWheels(left_speed, dir_left);
+        rightWheels(right_speed, dir_right);
     }
 }

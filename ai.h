@@ -7,7 +7,7 @@
 #include "util/delay.h"
 #include <stdbool.h>
 
-#define BIAS_MULT 1
+#define BIAS_MULT 0.2
 #define TURN_TIMER_LEFT 500
 #define TURN_TIMER_RIGHT 500
 
@@ -16,8 +16,11 @@
 #define LEFT_DIST (SERVO_RANGE - 1)
 #define FORWARD_DIST ((unsigned char)(SERVO_RANGE / 2))
 #define CLEAR_DIST 50
-#define CLOSE_DIST 10
-#define FAR_DIST 20
+#define CLOSE_DIST 20
+
+// control defines
+#define BASE_DRIVE_SPEED 192
+#define ULTRASONIC_DELAY 0
 
 unsigned int distances[SERVO_RANGE];
 unsigned char correctionFactor;
