@@ -45,10 +45,10 @@ void triggerUltrasonic()
 {
     TimerOverflow = false;
     setBit(PORTC, US_TRIG);
-    _delay_us(9);
+    _delay_us(10);
     clearBit(PORTC, US_TRIG);
     // reset counter 1
     // TIM16_WriteTCNT1(0);
     // Delay while pulse is sent
-    _delay_us(60);
+    _delay_ms(60);
 }
