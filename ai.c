@@ -96,27 +96,29 @@ void runAi()
     // _delay_ms(ULTRASONIC_DELAY);
     // _delay_ms(2000);
     moveServo(FORWARD_DIST * DEG_PER_UNIT);
+    _delay_ms(BASE_ULTRASONIC_DELAY);
     distances[FORWARD_DIST] = readUltrasonic();
-    _delay_ms(ULTRASONIC_DELAY);
+    // _delay_ms(BASE_DELAY);
 
     if (distances[FORWARD_DIST] >= CLOSE_DIST)
     {
         driveForwardBias(BASE_DRIVE_SPEED, BASE_DRIVE_SPEED);
+        _delay_ms(BASE_MOVE_DELAY);
     }
     else
     {
-        _delay_ms(500);
         moveServo(RIGHT_DIST * DEG_PER_UNIT);
+        _delay_ms(BASE_ULTRASONIC_DELAY);
         distances[RIGHT_DIST] = readUltrasonic();
-        _delay_ms(ULTRASONIC_DELAY);
+        // _delay_ms(BASE_DELAY);
 
         if (distances[RIGHT_DIST] >= CLOSE_DIST)
         {
-            turnRight(BASE_DRIVE_SPEED);
+            turnRight(BASE_TURN_SPEED);
         }
         else
         {
-            turnLeft(BASE_DRIVE_SPEED);
+            turnLeft(BASE_TURN_SPEED);
         }
     }
 

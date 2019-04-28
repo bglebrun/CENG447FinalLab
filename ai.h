@@ -20,7 +20,9 @@
 
 // control defines
 #define BASE_DRIVE_SPEED 192
-#define ULTRASONIC_DELAY 0
+#define BASE_TURN_SPEED 250
+#define BASE_MOVE_DELAY 250
+#define BASE_ULTRASONIC_DELAY 1000
 
 unsigned int distances[SERVO_RANGE];
 unsigned char correctionFactor;
