@@ -16,15 +16,26 @@ mac_addr = "f0:b5:d1:5b:e0:63"  # Ben LeBrun's bot
 # mac_addr = "88:3f:4a:f4:70:e8"  # Ben Garcia's bot
 
 async def write_packet(client: BleakClient, left_forward, right_forward, left_speed, right_speed):
-    left_dir = left_forward.to_bytes(1, 'little')
-    left_spd = left_speed.to_bytes(1, 'little')
-    right_dir = right_forward.to_bytes(1, 'little')
-    right_spd = right_speed.to_bytes(1, 'little')
-    await client.write_gatt_char(GATT_CHARACTERISTIC, left_dir)
-    await client.write_gatt_char(GATT_CHARACTERISTIC, left_spd)
-    await client.write_gatt_char(GATT_CHARACTERISTIC, right_dir)
-    await client.write_gatt_char(GATT_CHARACTERISTIC, right_spd)
-    print("wrote packet: %4d | %4d | %4d | %4d" % (left_forward, left_speed, right_forward, right_speed))
+    lft_spd_enc = left_speed.to_bytes(1, 'little')
+    rt_spd_enc = right_speed.to_bytes(1, 'little')
+    lft_dir_enc = left_forward.to_bytes(1, 'little')
+    rt_dir_enc = right_forward.to_bytes(1, 'little')
+    packet = chr(left_forward) + chr(right_forward) + chr(left_speed) + chr(right_speed)
+    checksumResult = checksum(packet)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, lft_dir_enc)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, rt_dir_enc)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, lft_spd_enc)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, rt_spd_enc)
+    await client.write_gatt_char(GATT_CHARACTERISTIC, checksumResult.to_bytes(1, 'little'))
+    await client.write_gatt_char(GATT_CHARACTERISTIC, ord('\n').to_bytes(1, 'little'))
+
+    print(("wrote packet: %d, %d, %d, %d, %d"%(left_forward, right_forward, left_speed, right_speed, checksumResult)))
+
+def checksum(data):
+    check = 0
+    for c in data:
+        check = (check + ord(c) )% 255 
+    return check
 
 
 class DS4(object):

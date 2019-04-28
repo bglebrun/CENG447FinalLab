@@ -1,8 +1,5 @@
 #include "servo.h"
 
-/* stdout stream */
-static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
-
 void initServo()
 {
     // set pin and timers
@@ -33,8 +30,6 @@ unsigned char mapAngle(unsigned char angleDeg)
     {
         result = DEG_MAP_MIN + (angleDeg / DEG_PER_UNIT);
     }
-
-    fprintf(&mystdout, "result map: %d\r\n", result);
 
     return result;
 }

@@ -2,7 +2,6 @@
 #define _SERVO_H_
 #include "bit_macros.h"
 #include "pin_map.h"
-#include "robotIo.h"
 #include "timers.h"
 #include <avr/io.h>
 

@@ -1,8 +1,10 @@
-#ifndef _ROBOT_IO_H_
-#define _ROBOT_IO_H_
+#ifndef _UART_H_
+#define _UART_H_
 #include <avr/io.h>
-#include <stdio.h>
+#include <string.h>
 
+/* CPU freq */
+#define F_CPU (16000000)
 /* baudrate configuration */
 #define USART_BAUDRATE 9600
 /* baudrate prescaler configuration */
@@ -17,9 +19,19 @@
     (0 << UMSEL01) | (0 << UMSEL00) | (0 << UPM01) | (0 << UPM00) |            \
         (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00) | (0 << UCPOL0);
 
-/* handles inserting characters into the output stream */
-int uart_putchar(char c, FILE* stream);
+/* IO buffer struct*/
+typedef struct iobuff {
+    char buffer [32];
+    int index;
+    int indexEnd;
+} IOBUFF;
+
 /* initializes UART communications using the defines above*/
-void initUART();
+void init_uart();
+void init_uart_buff(IOBUFF);
+void uart_tx(char);
+void uart_tx_str(char*);
+char uart_rx();
+int checksum(volatile char[]);
 
 #endif
