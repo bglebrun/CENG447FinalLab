@@ -4,8 +4,6 @@
 #include <stdbool.h>
 #define BIAS_MULT 1
 
-static int bias = 0;
-
 void forwardDrive(int, int);
 void turnRight(int);
 void turnLeft(int);
