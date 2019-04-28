@@ -8,12 +8,13 @@
 #include <stdbool.h>
 
 #define BIAS_MULT 1
-#define TURN_TIMER_LEFT 50
-#define TURN_TIMER_RIGHT 50
+#define TURN_TIMER_LEFT 500
+#define TURN_TIMER_RIGHT 500
 
 unsigned int distances[SERVO_RANGE];
 
 void forwardDrive(int speed, int bias);
+void turnAround(int speed);
 void turnRight(int speed);
 void turnLeft(int speed);
 void getDistances();

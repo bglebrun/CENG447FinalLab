@@ -38,6 +38,8 @@ void forwardDrive(int speed, int bias)
     }
 }
 
+void turnAround(int speed) { turnLeftTimed(speed, TURN_TIMER_LEFT * 2); }
+
 void turnRight(int speed) { turnRightTimed(speed, TURN_TIMER_RIGHT); }
 
 void turnLeft(int speed) { turnLeftTimed(speed, TURN_TIMER_LEFT); }
