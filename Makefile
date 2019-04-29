@@ -9,14 +9,14 @@ PROJECT		?= RCRobot
 
 # Objects to build
 # OBJECTS		?= timers.o robotIo.o motor_driver.o servo.o ultrasonic.o pcint.o main.o
-OBJECTS		?= robotIo.o pcint.o timers.o ultrasonic.o servo.o ai.o motor_driver.o main.o
+OBJECTS		?= robotIo.o pcint.o line_followers.o timers.o ultrasonic.o servo.o ai.o motor_driver.o main.o
 
 # Microprocessor
 AVRMCU		?= atmega328p
 AVRCLOCK	?= 16000000
 
 # Avr connection deets
-PORT		?= com6
+PORT		?= com9
 PROGRAMMER	?= arduino
 
 # Avr toolchain
