@@ -16,6 +16,7 @@ unsigned long targetCount;
 
 void initMotor()
 {
+    /*
     // Init port D for output H bridge 1
     setBit(DDRD, H_IN1);
     // Init port B for output H bridge 2-4
@@ -26,7 +27,11 @@ void initMotor()
     clearBit(PORTB, H_IN2);
     clearBit(PORTB, H_IN3);
     clearBit(PORTB, H_IN4);
-
+    */
+    DDRD = 0xff;
+    DDRB = 0xff;
+    PORTD = 0x00;
+    PORTB = 0x00;
     initTimer0();
 }
 

@@ -68,12 +68,12 @@ class DS4(object):
             self.dir_right = 1
             #positive wheel->right
             if self.wheel > 0:
-                self.speed_right = max(self.convert_speed(self.accel) - (self.wheelRate() * 255), 0)
-                self.speed_left = self.convert_speed(self.accel)
+                self.speed_left = max(self.convert_speed(self.accel) - (self.wheelRate() * 255), 0)
+                self.speed_right = self.convert_speed(self.accel)
             #negative wheel->left
             elif self.wheel < 0:
-                self.speed_right = self.convert_speed(self.accel)
-                self.speed_left = max(self.convert_speed(self.accel) - (self.wheelRate() * 255), 0)
+                self.speed_left = self.convert_speed(self.accel)
+                self.speed_right = max(self.convert_speed(self.accel) - (self.wheelRate() * 255), 0)
             #no turn, raw speed
             else:
                 self.speed_left = self.convert_speed(self.accel)
@@ -83,12 +83,12 @@ class DS4(object):
             self.dir_right = 0
             #positive wheel->right
             if self.wheel > 0:
-                self.speed_right = max(self.convert_speed(self.brake) - (self.wheelRate() * 255), 0)
-                self.speed_left = self.convert_speed(self.brake)
+                self.speed_left = max(self.convert_speed(self.brake) - (self.wheelRate() * 255), 0)
+                self.speed_right = self.convert_speed(self.brake)
             #negative wheel->left
             elif self.wheel < 0:
-                self.speed_right = self.convert_speed(self.brake)
-                self.speed_left = max(self.convert_speed(self.brake) - (self.wheelRate() * 255), 0)
+                self.speed_left = self.convert_speed(self.brake)
+                self.speed_right = max(self.convert_speed(self.brake) - (self.wheelRate() * 255), 0)
             #no turn, pedal to the metal
             else:
                 self.speed_left = self.convert_speed(self.brake)
