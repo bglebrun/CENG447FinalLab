@@ -80,7 +80,7 @@ int main(void)
     /* control output LED on pin 13 -- PORTB5 */
     DDRB = (1 << PORTB5);
 
-    while (overflowCount < 1500)
+    while ((overflowCount < 1500) && !all_sensor())
     {
         // automated mode here
         runAi();

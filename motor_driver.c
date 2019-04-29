@@ -16,8 +16,9 @@ unsigned long targetCount;
 
 void initMotor()
 {
-    // Init port B for output
+    // Init port D for output H bridge 1
     setBit(DDRD, H_IN1);
+    // Init port B for output H bridge 2-4
     setBit(DDRB, H_IN2);
     setBit(DDRB, H_IN3);
     setBit(DDRB, H_IN4);
@@ -43,7 +44,7 @@ void rightWheels(unsigned char speed, wheelDirection direction)
         clearBit(PORTD, H_IN1);
         break;
     }
-    OCR0A = ((ABSOLUTE_BIAS > 0) ? speed - abs(ABSOLUTE_BIAS) : speed);
+    OCR0A = speed;
 }
 
 // Left wheels
@@ -60,7 +61,7 @@ void leftWheels(unsigned char speed, wheelDirection direction)
         clearBit(PORTB, H_IN3);
         break;
     }
-    OCR0B = ((ABSOLUTE_BIAS < 0) ? speed - abs(ABSOLUTE_BIAS) : speed);
+    OCR0B = speed;
 }
 
 void turnLeftTimed(unsigned char speed, int time_ms)
