@@ -17,10 +17,14 @@ unsigned long targetCount;
 void initMotor()
 {
     // Init port B for output
-    DDRB = 0xFF;
-    DDRD = 0xFF;
-    PORTB = 0x00;
-    PORTD = 0x00;
+    setBit(DDRD, H_IN1);
+    setBit(DDRB, H_IN2);
+    setBit(DDRB, H_IN3);
+    setBit(DDRB, H_IN4);
+    clearBit(PORTD, H_IN1);
+    clearBit(PORTB, H_IN2);
+    clearBit(PORTB, H_IN3);
+    clearBit(PORTB, H_IN4);
 
     initTimer0();
 }

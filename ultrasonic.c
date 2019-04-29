@@ -15,11 +15,8 @@ void initUltrasonic()
     setBit(DDRC, US_TRIG);
     // Echo on A4
     clearBit(DDRC, US_ECHO);
-
     clearBit(PORTC, US_TRIG);
     clearBit(PORTC, US_ECHO);
-
-    // setBit(PORTC, US_ECHO); // pull-up for echo
 
     initTimer1();
 }

@@ -9,10 +9,6 @@
  * ***/
 #define MY_BT_NAME "BENSQG"
 
-#define F_CPU (16000000)
-// #define BAUDRATE (9600)
-// #define BAUD_PRESCALE (F_CPU / BAUDRATE / 16 - 1)
-
 #include "ai.h"
 #include "motor_driver.h"
 #include "pcint.h"
@@ -68,18 +64,10 @@ void init()
     left_speed = 0;
     right_speed = 0;
 
-    // fprintf(&mystdout, "init done\r\n");
 }
 
 int main(void)
 {
-    // char r; /* received character on UART */
-
-    // /* startup UART @ 9600 8n1 asynchronous, receive & transmit enabled */
-    // UBRR0H = (unsigned char)(BAUD_PRESCALE >> 8);
-    // UBRR0L = (unsigned char)BAUD_PRESCALE;
-    // UCSR0B = (1 << RXEN0) | (1 << TXEN0) | (1 << RXCIE0);
-    // UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
     init();
 
     /* Set the BT name */
@@ -88,7 +76,6 @@ int main(void)
     uart_tx(0);
     uart_tx_str("\r\n");
     uart_tx(0);
-    // fprintf(&mystdout, "AT+NAME=%s\r\n", MY_BT_NAME);
 
     /* control output LED on pin 13 -- PORTB5 */
     DDRB = (1 << PORTB5);
@@ -126,14 +113,6 @@ void uart_tx_str(char* s)
         uart_tx(*(s++));
 }
 
-/* return whatever byte is in the RX, if there is one. Return 0 otherwise */
-// char uart_rx()
-// {
-//     if (UCSR0A & (1 << RXC0))
-//         return UDR0;
-//     else
-//         return 0;
-// }
 /*
 ISR(USART_RX_vect)
 {

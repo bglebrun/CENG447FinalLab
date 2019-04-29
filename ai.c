@@ -1,8 +1,5 @@
 #include "ai.h"
 
-/* stdout stream */
-static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
-
 // void getDistances()
 // {
 //     // for (unsigned char i = 0; i < SERVO_RANGE; i++)
