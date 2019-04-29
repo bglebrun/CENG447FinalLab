@@ -136,9 +136,26 @@ didn't make a full 90 degree turn or measured a distance that was incorrect
 to the robot's left or right. We fixed this by adding very long delays between sensor readings and performing only one reading at a time, rather than gathering all of the distances across the arc of the servo. We made this work by making the robot move a larger distance in each decision pass, and by having the robot prefer the most likely motions in a priority order, thus requiring fewer sensor reads.
 
 %TODO GAMEDAY PERFORMANCE
+The autonomous mode was highly dependent on the physical conditions of the track, our robot suffered 
+wheel slippage on the styrofoam which affected our earlier testing and calculations for making turns. 
+On our first run, we stuck our robot into the wall which ended up timing out to the control portion 
+of the contest. The first attempt with the controller was definitely more accurate, as we had good 
+minute control of the robot using joysticks controlling each side of the wheels. Unfortunately, 
+we had a connection loss in the middle of the contest which required us to do a reconnection cycle 
+on our control computer. The control library PyGame takes a considerable amount of time to re-initialize
+itself.
+
+The second run was entirely frivolous, inaccurate, and generally a fluke. The autonomous section performed 
+a lot better than the first run. However, the nature of a car steering wheel without turn geometry 
+or the need for ~800 degrees of turn definition shows that an over-engineered solution is not the 
+optimal control method for this type of challenge.
 
 %TODO ADDITIONAL ENHANCEMENTS
- 
+We added the wire gripper, made of an old coat hanger and hot glue. End of maze line detection was also 
+convenient to detect when the robot ended the maze. Analogue control of the wheels via the controller 
+was a substantial enhancement to the degree of control we had on the robot. The steering wheel was entirely an 
+unecessary addition, mostly for jokes, but showed an interesting case study in proper and well engineered control 
+design for correct applications.
 
 \newpage
 \section*{Appendices}
@@ -160,6 +177,8 @@ Table of contents:
     \item timers.c - Timers control code
     \item ultrasonic.h - Ultrasonic header file
     \item ultrasonic.c - Ultrasonic code file
+    \item ds4.py - Dualshock 4 controller interface
+    \item logitechg29.py - G29 wheel controller interface
 \end{itemize}
 \newpage
 
@@ -256,6 +275,18 @@ Table of contents:
 \section*{Appendix P: ultrasonic.c}
 \begin{tiny}
 \lstinputlisting{../ultrasonic.c}
+\end{tiny}
+\newpage
+
+\section*{Appendix Q: ds4.py}
+\begin{tiny}
+\lstinputlisting{../ds4.py}
+\end{tiny}
+\newpage
+
+\section*{Appendix R: logitechg29.py}
+\begin{tiny}
+\lstinputlisting{../logitechg29.py}
 \end{tiny}
 \newpage
 
