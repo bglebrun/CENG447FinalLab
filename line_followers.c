@@ -13,15 +13,15 @@ void init_line_followers() {
 }
 
 bool line_right() {
-    return ~(bool)(PINB & bitVal(LINE_R)); 
+    return (PINB & bitVal(LINE_R)); 
 }
 
 bool line_left() {
-    return ~(bool)(PIND & bitVal(LINE_L));
+    return (PIND & bitVal(LINE_L));
 }
 
 bool line_mid() {
-    return ~(bool)(PIND & bitVal(LINE_M)); 
+    return (PIND & bitVal(LINE_M)); 
 }
 
 bool all_sensor() {

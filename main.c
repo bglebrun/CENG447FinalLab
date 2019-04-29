@@ -79,17 +79,17 @@ int main(void)
 
     /* control output LED on pin 13 -- PORTB5 */
     DDRB = (1 << PORTB5);
-/*
+
     while (overflowCount < 1500)
     {
         // automated mode here
         runAi();
         // fprintf(&mystdout, "overflow count after: %d\r\n", overflowCount);
     }
-    manual_enable = true;*/
+    manual_enable = true;
     while (1)
     {
-        fprintf(&mystdout, "line followers say: l: %d, m: %d, r: %d\n", line_left(), line_mid(), line_right());
+        //fprintf(&mystdout, "line followers say: l: %d, m: %d, r: %d\n", line_left(), line_mid(), line_right());
     }
 
     return -1;
@@ -113,7 +113,7 @@ void uart_tx_str(char* s)
         uart_tx(*(s++));
 }
 
-/*
+
 ISR(USART_RX_vect)
 {
     unsigned char inByte = UDR0;
@@ -152,7 +152,7 @@ ISR(USART_RX_vect)
     }
     PORTB &= ~(1 << PORTB5);
 }
-*/
+
 void set_robot_speeds()
 {
     if (manual_enable)
