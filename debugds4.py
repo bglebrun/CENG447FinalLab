@@ -6,8 +6,7 @@ import time
 import asyncio
 
 class DS4(object):
-    axis_left = None
-    axis_right = None
+    axis_data = None
 
     def init(self):
         pygame.init()
@@ -18,23 +17,27 @@ class DS4(object):
     async def read(self, event_queue):
         #Axis 1: left sticks
         #Axis 3: right sticks
+        if not self.axis_data:
+            self.axis_data = {}
+
         while 1:
-            event = await event_queue.get()
-            if event.type == pygame.QUIT:
-                sys.quit(0)
-                break
-            elif event.type == pygame.JOYAXISMOTION:
-                axis_left = round(self.controller.get_axis(1),4)
-                axis_right = round(self.controller.get_axis(3),4)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.quit(0)
+                    break
+                elif event.type == pygame.JOYAXISMOTION:
+                    self.axis_data[event.axis] = round(event.value,2)
+                #  axis_left = round(self.controller.get_axis(1),4)
+                #  axis_right = round(self.controller.get_axis(3),4)
 
 
-            # print (axis_data)
+                print (self.axis_data)
             # writing to vars goes here
-            print("Left:")
-            print(axis_left)
-            print("Right:")
-            print(axis_right)
-            os.system('cls')
+           # print("Left:")
+           # print(axis_left)
+           # print("Right:")
+           # print(axis_right)
+           # os.system('cls')
 
         asyncio.get_event_loop()
 
