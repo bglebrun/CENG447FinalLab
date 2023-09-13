@@ -19,6 +19,3 @@ Pull down, edit the ```PORT``` variable in the [Makefile](https://github.com/bgl
 * ``` flash ``` will grab these files and flash them to the board'
 * ``` test-connection ``` will invoke avrdude's simple connection test
 * ``` clean ``` Cleans up project files
-
-### License
-WTFPL, just like, do w/e man
